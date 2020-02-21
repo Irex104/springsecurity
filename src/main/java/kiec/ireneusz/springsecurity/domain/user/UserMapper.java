@@ -1,4 +1,4 @@
-package kiec.ireneusz.springsecurity;
+package kiec.ireneusz.springsecurity.domain.user;
 
 public class UserMapper {
 

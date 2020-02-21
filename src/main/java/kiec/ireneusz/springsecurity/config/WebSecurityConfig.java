@@ -1,5 +1,6 @@
 package kiec.ireneusz.springsecurity.config;
 
+import io.swagger.models.HttpMethod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,7 +30,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
+        http
+//                .httpBasic().and()
+//                .authorizeRequests()
+//                .antMatchers(String.valueOf(HttpMethod.GET), "/admin").hasRole("ADMIN")
+//                .antMatchers(String.valueOf(HttpMethod.GET), "/user").hasAnyRole("USER","ADMIN")
+//                .antMatchers(String.valueOf(HttpMethod.GET), "/*").permitAll()
+//                .antMatchers(String.valueOf(HttpMethod.POST), "/login").hasAnyRole("USER","ADMIN");
+                .authorizeRequests()
                 .antMatchers("/admin*").hasRole("ADMIN")
                 .antMatchers("/user*").hasAnyRole("USER","ADMIN")
                 .antMatchers("/*").permitAll()

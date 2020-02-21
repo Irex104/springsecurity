@@ -12,7 +12,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 public class SwaggerConfig {
 
-    private static final String BasePackage = "eu.aberit.abiflowbuilder";
+    private static final String BasePackage = "kiec.ireneusz.springsecurity";
 
     @Bean
     public Docket productApi(){

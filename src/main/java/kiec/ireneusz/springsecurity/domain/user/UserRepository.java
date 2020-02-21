@@ -1,4 +1,4 @@
-package kiec.ireneusz.springsecurity;
+package kiec.ireneusz.springsecurity.domain.user;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
