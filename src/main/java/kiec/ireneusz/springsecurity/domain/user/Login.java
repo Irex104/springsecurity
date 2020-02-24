@@ -7,23 +7,26 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import net.bytebuddy.utility.RandomString;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.stream.Collectors;
 
 @Entity
 @Table(schema = "public", name = "login")
-@SequenceGenerator(schema = "public", name = "login_seq_id", allocationSize = 1)
+//@SequenceGenerator(schema = "public", name = "login_seq_id", allocationSize = 1)
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 class Login extends AbstractModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "login_seq_id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE/*, generator = "login_seq_id"*/)
     private Long id;
 
     @Column(name = "mail", nullable = false)
@@ -62,9 +65,10 @@ class Login extends AbstractModel {
     }
 
     Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.role.getPermissionList().stream()
-                .map(permission -> (GrantedAuthority) permission::getPermission)
-                .collect(Collectors.toList());
+//        return this.role.getPermissionList().stream()
+//                .map(permission -> (GrantedAuthority) permission::getPermission)
+//                .collect(Collectors.toList());
+        return Collections.singleton(new SimpleGrantedAuthority("ROLE_"+this.role.getName()));
     }
 
     void activate() {
