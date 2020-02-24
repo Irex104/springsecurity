@@ -3,8 +3,11 @@ package kiec.ireneusz.springsecurity.domain.user;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-@Repository
-public interface UserRepository extends JpaRepository<User, Long> {
+import java.util.List;
 
-    User findByUsername(String username);
+@Repository
+public interface PeopleRepository extends JpaRepository<Person, Long> {
+
+    List<Person> findAllByDeletedAtIsNull();
+
 }

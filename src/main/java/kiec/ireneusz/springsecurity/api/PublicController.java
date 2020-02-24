@@ -1,20 +1,68 @@
 package kiec.ireneusz.springsecurity.api;
 
-import org.springframework.http.MediaType;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.web.bind.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import io.swagger.annotations.Api;
+import kiec.ireneusz.springsecurity.domain.user.UserFacade;
+import kiec.ireneusz.springsecurity.domain.user.dto.LoginApi;
+import kiec.ireneusz.springsecurity.domain.user.dto.RegisterApi;
+import kiec.ireneusz.springsecurity.untils.AuthenticationImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.common.OAuth2AccessToken;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.security.oauth2.provider.endpoint.TokenEndpoint;
+
+import javax.management.relation.RoleNotFoundException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
-@RequestMapping(value = "public", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/public")
+@Api(tags = "Auth", produces = "application/json", consumes = "application/json")
 public class PublicController {
 
-    @GetMapping("/hello")
-    @PreAuthorize("hasRole('ADMIN')")
-    public String hello(){
-        return "hello!";
+    private final TokenEndpoint tokenEndpoint;
+    private final UserFacade userFacade;
+
+    @Autowired
+    public PublicController(TokenEndpoint tokenEndpoint, UserFacade userFacade) {
+        this.tokenEndpoint = tokenEndpoint;
+        this.userFacade = userFacade;
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<Void> register(
+            @RequestBody RegisterApi api
+    ) throws RoleNotFoundException {
+        userFacade.register(api);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<OAuth2AccessToken> login(
+            @RequestBody LoginApi api,
+            @RequestHeader(defaultValue = "Basic YnJvd3Nlcjo=") String authorization
+    ) throws HttpRequestMethodNotSupportedException {
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put("username", api.getUsername());
+        parameters.put("password", api.getPassword());
+        parameters.put("grant_type", "password");
+        parameters.put("scope", "ui");
+        return tokenEndpoint.postAccessToken(new AuthenticationImpl(), parameters);
+    }
+
+    @GetMapping("/logout")
+    public ResponseEntity<Void> logout(HttpServletRequest request, HttpServletResponse response) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null) {
+            new SecurityContextLogoutHandler().logout(request, response, auth);
+        }
+        return ResponseEntity.ok().build();
     }
 
 }

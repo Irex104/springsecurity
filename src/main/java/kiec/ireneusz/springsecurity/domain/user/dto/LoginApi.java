@@ -1,4 +1,4 @@
-package kiec.ireneusz.springsecurity.domain.user.login;
+package kiec.ireneusz.springsecurity.domain.user.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

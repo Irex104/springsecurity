@@ -1,8 +1,7 @@
 package kiec.ireneusz.springsecurity.config;
 
-import kiec.ireneusz.springsecurity.domain.user.MyUserDetailsService;
+import kiec.ireneusz.springsecurity.domain.user.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,14 +22,14 @@ public class AuthenticationServerConfig extends AuthorizationServerConfigurerAda
 
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
-    private final MyUserDetailsService userDetailsService;
+    private final LoginService userDetailsService;
     private DataSource dataSource;
 
     @Autowired
     public AuthenticationServerConfig(
             /*@Qualifier(" authenticationManagerBean")*/ AuthenticationManager authenticationManager,
             PasswordEncoder passwordEncoder,
-            MyUserDetailsService userDetailsService,
+            LoginService userDetailsService,
             DataSource dataSource
     ) {
         this.authenticationManager = authenticationManager;
