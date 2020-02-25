@@ -12,6 +12,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
 import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 
 import javax.sql.DataSource;
@@ -24,6 +25,7 @@ public class AuthenticationServerConfig extends AuthorizationServerConfigurerAda
     private final PasswordEncoder passwordEncoder;
     private final LoginService userDetailsService;
     private DataSource dataSource;
+    private static TokenStore tokenStore = new InMemoryTokenStore();
 
     @Autowired
     public AuthenticationServerConfig(
@@ -38,10 +40,10 @@ public class AuthenticationServerConfig extends AuthorizationServerConfigurerAda
         this.dataSource = dataSource;
     }
 
-    @Bean
-    public TokenStore tokenStore() {
-        return new JdbcTokenStore(this.dataSource);
-    }
+//    @Bean
+//    public TokenStore tokenStore() {
+//        return new JdbcTokenStore(this.dataSource);
+//    }
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
@@ -60,7 +62,7 @@ public class AuthenticationServerConfig extends AuthorizationServerConfigurerAda
                 .pathMapping("/oauth/token", "/auth/refresh")
                 .pathMapping("/oauth/check_token", "/auth/check_token")
                 .pathMapping("/oauth/authorize", "/auth/authorize")
-                .tokenStore(tokenStore())
+                .tokenStore(tokenStore)
                 .authenticationManager(authenticationManager)
                 .userDetailsService(userDetailsService);
     }

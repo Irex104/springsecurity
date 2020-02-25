@@ -16,14 +16,14 @@ import java.util.stream.Collectors;
 
 @Entity
 @Table(schema = "public", name = "login")
-@SequenceGenerator(schema = "public", name = "login_seq_id", allocationSize = 1)
+//@SequenceGenerator(schema = "public", name = "login_seq_id", allocationSize = 1)
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 class Login extends AbstractModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "login_seq_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY/*, generator = "login_seq_id"*/)
     private Long id;
 
     @Column(name = "mail", nullable = false)

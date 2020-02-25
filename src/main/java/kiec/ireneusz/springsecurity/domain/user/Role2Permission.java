@@ -9,13 +9,13 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(schema = "public", name = "role2permission")
-@SequenceGenerator(schema = "public", name = "role2permission_seq_id", allocationSize = 1)
+//@SequenceGenerator(schema = "public", name = "role2permission_seq_id", allocationSize = 1)
 @Getter
 @NoArgsConstructor
 class Role2Permission extends AbstractModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "role2permission_seq_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY/*, generator = "role2permission_seq_id"*/)
     private Long id;
 
     @NotNull

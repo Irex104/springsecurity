@@ -28,7 +28,7 @@ public class Role extends AbstractModel {
     @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(
             schema = "public", name = "role2permission",
-            joinColumns = @JoinColumn(name = "id"),
+            joinColumns = @JoinColumn(name = "role_id"),
             inverseJoinColumns = @JoinColumn(name = "permission_id")
     )
     private Collection<Permission> permissionList = new ArrayList<>();

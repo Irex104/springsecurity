@@ -11,13 +11,13 @@ import java.time.LocalDate;
 
 @Entity
 @Table(schema = "public", name = "people")
-@SequenceGenerator(schema = "public", name = "people_seq_id", allocationSize = 1)
+//@SequenceGenerator(schema = "public", name = "people_seq_id", allocationSize = 1)
 @Getter
 @NoArgsConstructor
 public class Person extends AbstractModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "people_seq_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY/*, generator = "people_seq_id"*/)
     private Long id;
 
     @Column(name = "first_name")
